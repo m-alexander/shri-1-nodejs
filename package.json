@@ -1,0 +1,32 @@
+{
+  "name": "background-replacer",
+  "version": "1.0.0",
+  "description": "API for replacing image background",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/server",
+    "watch": "nodemon src/server",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepare": "husky install"
+  },
+  "author": "Alexander Mamutov (alexander-mamutov@yandex.ru)",
+  "keywords": [],
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^7.26.0",
+    "husky": "^6.0.0",
+    "lint-staged": "^11.0.0",
+    "nodemon": "^2.0.13",
+    "prettier": "^2.3.0"
+  },
+  "lint-staged": {
+    "*.{js,css,md}": "prettier --write",
+    "*.js": "eslint --cache --fix"
+  },
+  "dependencies": {
+    "backrem": "^1.1.0",
+    "express": "^4.17.1",
+    "multer": "^1.4.3",
+    "uuid": "^8.3.2"
+  }
+}
