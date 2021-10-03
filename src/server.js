@@ -5,6 +5,7 @@ const { PORT, imagesFolder } = require('./config');
 const { replaceBackground } = require('backrem');
 const db = require('./entities/Database');
 const Image = require('./entities/Image');
+const { exists } = require('./utils/fs');
 
 const app = express();
 const upload = multer({ dest: imagesFolder });
@@ -28,7 +29,7 @@ app.get('/list', (req, res) => {
 });
 
 // GET /image/:id  — скачать изображение с заданным id
-app.get('/image/:id', (req, res, next) => {
+app.get('/image/:id', async (req, res, next) => {
   const imgId = req.params.id;
   const img = db.findOne(imgId);
 
@@ -37,8 +38,15 @@ app.get('/image/:id', (req, res, next) => {
     return next(new Error('Not found'));
   }
 
+  const pathToFile = img.getFullImagePath();
+  const isFileExists = await exists();
+  if (!isFileExists) {
+    res.statusCode = 404;
+    return next(new Error('Not found'));
+  }
+
   res.setHeader('Content-type', 'image/jpeg');
-  return res.download(img.getFullImagePath(), img.id + '.jpg');
+  return res.download(pathToFile, img.id + '.jpg');
 });
 
 // DELETE /image/:id  — удалить изображение
